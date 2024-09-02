@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.leaflet-container{
+  height: 80vh;
+  width: 100%;
+  z-index: 1;
+}
