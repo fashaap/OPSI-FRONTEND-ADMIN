@@ -1,3 +1,5 @@
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 import CountUp from "react-countup";
 import AxiosInstance from "../auth/AxiosInstance";
 import { useEffect, useState } from "react";
@@ -115,6 +117,132 @@ const HomePage = () => {
     },
   ];
 
+  const handleDownloadExcelAll = () => {
+    const today = new Date();
+    today.toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
+
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+
+    const worksheet = XLSX.utils.json_to_sheet(dataTicket);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const blob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+    });
+
+    saveAs(
+      blob,
+      `Laporan Keseluruhan Izin Keluar Siswa  ${date}-${month}-${year}.xlsx`
+    );
+  };
+
+  const handleDownloadExcelDispen = () => {
+    const today = new Date();
+    today.toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
+
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+
+    const worksheet = XLSX.utils.json_to_sheet(
+      dataTicket.filter((ticket) => ticket.category === 7010)
+    );
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const blob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+    });
+
+    saveAs(blob, `Laporan Dispen Siswa  ${date}-${month}-${year}.xlsx`);
+  };
+
+  const handleDownloadExcelIzin = () => {
+    const today = new Date();
+    today.toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
+
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+
+    const worksheet = XLSX.utils.json_to_sheet(
+      dataTicket.filter((ticket) => ticket.category === 7020)
+    );
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const blob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+    });
+
+    saveAs(blob, `Laporan Izin Siswa  ${date}-${month}-${year}.xlsx`);
+  };
+
+  const handleDownloadExcelIzinPulang = () => {
+    const today = new Date();
+    today.toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
+
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+
+    const worksheet = XLSX.utils.json_to_sheet(
+      dataTicket.filter((ticket) => ticket.category === 7030)
+    );
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const blob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+    });
+
+    saveAs(blob, `Laporan Izin Pulang Siswa  ${date}-${month}-${year}.xlsx`);
+  };
+
+  const handleDownloadExcelUnknown = () => {
+    const today = new Date();
+    today.toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
+
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+
+    const worksheet = XLSX.utils.json_to_sheet(
+      dataTicket.filter((ticket) => ticket.category === 5050)
+    );
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const blob = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+    });
+
+    saveAs(blob, `Laporan Tidak Diketahui Siswa  ${date}-${month}-${year}.xlsx`);
+  };
+
   return (
     <div className="flex flex-col">
       {loading ? ( // Show spinner while loading
@@ -179,23 +307,47 @@ const HomePage = () => {
             </ResponsiveContainer>
           </div>
 
-          <div className="bg-white rounded-lg p-4 shadow-lg mt-10">
+          <div className="bg-white rounded-lg p-4 shadow-lg mt-5">
             <h2 className="text-xl font-bold">
-              Ticket Statistics - Semester 1
+              Unduh Laporan Izin Keluar Siswa
             </h2>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart
-                data={semesterChartData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+
+            <div className="flex  gap-4 items-center mt-5">
+              <button
+                className="bg-[#014B7C] text-white rounded-lg py-3 px-5"
+                onClick={handleDownloadExcelAll}
               >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="value" />
-              </BarChart>
-            </ResponsiveContainer>
+                Unduh Laporan Keseluruhan
+              </button>
+
+              <button
+                className="bg-[#014B7C] text-white rounded-lg py-3 px-5"
+                onClick={handleDownloadExcelDispen}
+              >
+                Unduh Laporan Dispen
+              </button>
+
+              <button
+                className="bg-[#014B7C] text-white rounded-lg py-3 px-5"
+                onClick={handleDownloadExcelIzin}
+              >
+                Unduh Laporan Izin
+              </button>
+
+              <button
+                className="bg-[#014B7C] text-white rounded-lg py-3 px-5"
+                onClick={handleDownloadExcelIzinPulang}
+              >
+                Unduh Laporan Izin Pulang
+              </button>
+
+              <button
+                className="bg-[#014B7C] text-white rounded-lg py-3 px-5"
+                onClick={handleDownloadExcelUnknown}
+              >
+                Unduh Laporan Tidak Diketahui
+              </button>
+            </div>
           </div>
         </>
       )}
