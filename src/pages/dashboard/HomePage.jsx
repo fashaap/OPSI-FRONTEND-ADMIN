@@ -98,7 +98,7 @@ const HomePage = () => {
   const semesterCounts = historyCount("semester");
 
   const weeklyChartData = [
-    { name: "Dispen", value: weeklyCounts.dispenCount, fill: "#014B7C" },
+    { name: "Dispen", value: weeklyCounts.dispenCount, fill: "  " },
     { name: "Izin", value: weeklyCounts.izinCount, fill: "#FFA700" },
     { name: "Pulang", value: weeklyCounts.pulangCount, fill: "#16A34A" },
     { name: "Tidak Diketahui", value: weeklyCounts.nullCount, fill: "#DC2626" },
